@@ -24,6 +24,12 @@ tasks {
         executable = getNpm()
         args("run", "pack")
     }
+
+    register<Exec>("publishPlugin") {
+        dependsOn("buildDist")
+        executable = getNpm()
+        args("run", "publish")
+    }
 }
 
 dockerCompose {

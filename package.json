@@ -72,7 +72,8 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
-    "pack": "vsce package --out pack/"
+    "pack": "vsce package --out pack/",
+    "publish": "vsce publish -p $PUBLISH_TOKEN"
   },
   "devDependencies": {
     "@types/glob": "8.0.0",
