@@ -67,8 +67,6 @@ jobs:
         uses: GabrielBB/xvfb-action@v1.6
         with:
           run: ./gradlew test
-          env:
-            CI: true
 
       - run: ./gradlew composeLogs
         if: ${{ always() }}
