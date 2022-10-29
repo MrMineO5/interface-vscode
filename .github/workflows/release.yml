@@ -49,7 +49,7 @@ jobs:
       # Publish the plugin to the Marketplace
       - name: Publish Plugin
         env:
-          PUBLISH_TOKEN: ${{ secrets.VSCODE_PUBLISH_TOKEN }}
+          VSCE_PAT: ${{ secrets.VSCODE_PUBLISH_TOKEN }}
         run: ./gradlew publishPlugin -PprojectVersion=$SPP_RELEASE_VERSION
 
       # Upload artifact as a release asset

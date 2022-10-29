@@ -74,7 +74,7 @@
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
     "pack": "vsce package --out pack/",
-    "publish": "vsce publish -p $PUBLISH_TOKEN"
+    "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/glob": "8.0.0",
