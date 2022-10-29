@@ -25,7 +25,6 @@ export function getSourceMarker(): SourceMarker | undefined {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
     vscode.workspace.onDidChangeConfiguration((e) => {
         if (!e.affectsConfiguration("sourceplusplus"))
             return;
@@ -36,7 +35,6 @@ export function activate(context: vscode.ExtensionContext) {
     getSourceMarker()?.init(vscode.workspace.getConfiguration("sourceplusplus"));
 
     const testCommandId = "sourceplusplus.statusClick";
-
     let statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, -Infinity);
     statusBarItem.command = testCommandId;
     statusBarItem.text = "S++";

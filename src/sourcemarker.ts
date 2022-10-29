@@ -26,7 +26,14 @@ export class SourceMarker {
     liveInstrumentManager?: LiveInstrumentManager;
 
     constructor() {
+        // Ensure the sourceplusplus.enabled context is set to false
+        this.setStatus(SourceMarkerStatus.STARTING);
+    }
 
+    setStatus(status: SourceMarkerStatus) {
+        this.status = status;
+
+        vscode.commands.executeCommand('setContext', 'sourceplusplus.enabled', status === SourceMarkerStatus.ACTIVE);
     }
 
     async init(config: vscode.WorkspaceConfiguration) {
@@ -37,12 +44,12 @@ export class SourceMarker {
 
         console.log(`Host: ${host}, accessToken: ${accessToken}`);
 
-        this.status = SourceMarkerStatus.CONNECTING
+        this.setStatus(SourceMarkerStatus.CONNECTING);
 
         this.token = await axios.get(`${host}/api/new-token?access_token=${accessToken}`)
             .then(response => response.data)
             .catch(error => {
-                this.status = SourceMarkerStatus.ERROR;
+                this.setStatus(SourceMarkerStatus.ERROR);
                 console.log(error);
             });
 
@@ -51,7 +58,7 @@ export class SourceMarker {
 
         await new Promise<void>((resolve, reject) => this.eventBus!.onopen = resolve);
 
-        this.status = SourceMarkerStatus.ACTIVE;
+        this.setStatus(SourceMarkerStatus.ACTIVE);
         console.log("Connected to Source++ Platform");
 
         let _ = await this.eventBusSend("spp.platform.status.marker-connected", {
