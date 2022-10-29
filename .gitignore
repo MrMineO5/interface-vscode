@@ -1,7 +1,9 @@
 out
 dist
+pack
 node_modules
 .vscode-test/
 *.vsix
 .idea
 *.iml
+.gradle

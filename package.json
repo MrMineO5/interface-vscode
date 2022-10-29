@@ -3,6 +3,7 @@
   "displayName": "Source++",
   "description": "This project contains the VSCode plugin for Source++, the open-source live coding platform. This plugin also works with regular Apache SkyWalking installations, but only Live View commands are supported.",
   "version": "0.6.7",
+  "repository": "https://github.com/sourceplusplus/interface-vscode",
   "engines": {
     "vscode": "^1.70.0"
   },
@@ -10,7 +11,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -70,7 +71,9 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "compile-test": "npm run compile && npm run test",
+    "pack": "vsce package --out pack/"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",

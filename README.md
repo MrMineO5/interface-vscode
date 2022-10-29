@@ -1,4 +1,4 @@
-# ![](https://github.com/sourceplusplus/live-platform/blob/master/.github/media/sourcepp_logo.svg)
+# ![](https://github.com/sourceplusplus/live-platform/blob/master/.github/media/sourcepp_logo.png)
 
 ![GitHub](https://img.shields.io/github/license/sourceplusplus/interface-vscode)
 ![GitHub release](https://img.shields.io/github/v/release/sourceplusplus/interface-vscode?include_prereleases)
