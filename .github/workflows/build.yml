@@ -78,6 +78,9 @@ jobs:
           name: docker-logs
           path: ./build/containers-logs
 
+      - name: Install vsce
+        run: npm install -g vsce
+
       - name: Prepare VSIX
         run: ./gradlew buildDist
 
