@@ -7,7 +7,7 @@ plugins {
 tasks {
     register<Exec>("test") {
         executable = getNpm()
-        args("run", "compile-test")
+        args("run", "test")
     }
     register("cleanPackDir") {
         file("pack/").mkdirs()

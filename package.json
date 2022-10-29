@@ -72,7 +72,6 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
-    "compile-test": "npm run compile && npm run test",
     "pack": "vsce package --out pack/"
   },
   "devDependencies": {
