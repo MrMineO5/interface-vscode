@@ -19,15 +19,8 @@ tasks {
         args("install")
     }
 
-    register<Exec>("makeDist") {
-        dependsOn("cleanPackDir")
-        dependsOn("installModules")
-        executable = getNpm()
-        args("run", "build")
-    }
-
     register<Exec>("buildDist") {
-        dependsOn("makeDist")
+        dependsOn("cleanPackDir")
         executable = getNpm()
         args("run", "pack")
     }
