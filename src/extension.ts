@@ -4,8 +4,8 @@ import * as vscode from 'vscode';
 import {Uri} from 'vscode';
 import {SourceMarker} from "./sourcemarker";
 import addBreakpointCommand from "./commands/addBreakpointCommand";
-import BreakpointTreeProvider from "./sidebar/breakpointTreeProvider";
-import breakpointTreeProvider from "./sidebar/breakpointTreeProvider";
+import LiveBreakpoint from "./model/instruments/liveBreakpoint";
+import instrumentListProvider from "./sidebar/instrumentListProvider";
 
 const workspaces = new Map<Uri, SourceMarker>();
 
@@ -49,11 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
         console.log("Status bar pressed!");
     });
 
-
-    vscode.window.createTreeView("live-breakpoints", {
-        treeDataProvider: breakpointTreeProvider
-    });
-
+    vscode.window.registerTreeDataProvider('instrument-list', instrumentListProvider);
 
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
@@ -63,6 +59,38 @@ export function activate(context: vscode.ExtensionContext) {
     // Now provide the implementation of the command with registerCommand
     // The commandId parameter must match the command field in package.json
     let disposable = vscode.commands.registerCommand('sourceplusplus.addBreakpoint', addBreakpointCommand);
+
+    let viewBreakpointDisposable = vscode.commands.registerCommand('sourceplusplus.viewBreakpoint', (breakpoint: LiveBreakpoint) => {
+        if (breakpoint.view) {
+            // If the breakpoint has a view, open it
+            breakpoint.view.reveal(vscode.ViewColumn.Beside);
+            return;
+        }
+
+        breakpoint.view = vscode.window.createWebviewPanel("breakpoint", "Source++ Breakpoint " + breakpoint.id, vscode.ViewColumn.Beside, {
+            enableScripts: true,
+        });
+        breakpoint.view.onDidDispose(() => {
+            breakpoint.view = undefined;
+        });
+
+        breakpoint.view.webview.html = `<!DOCTYPE html>
+                                <html lang="en">
+                                <head>
+                                    <meta charset="UTF-8">
+                                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                    <title>Document</title>
+                                </head>
+                                <body>
+                                    <h1>Breakpoint ${breakpoint.id}</h1>
+                                    <h3>Location: ${breakpoint.location.source}:${breakpoint.location.line + 1}</h3>
+                                    <table>
+                                        <tr><td>test</td></tr>
+                                        <tr><td>test</td></tr>
+                                    </table>
+                                </body>
+                                </html>`;
+    });
 
     context.subscriptions.push(disposable);
 }

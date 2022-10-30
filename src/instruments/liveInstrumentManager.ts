@@ -1,12 +1,15 @@
 import {SourceMarker} from "../sourcemarker";
 import {LiveInstrumentEvent, LiveInstrumentEventType} from "./liveInstrumentEvent";
 import * as vscode from "vscode";
-import BreakpointTreeProvider from "../sidebar/breakpointTreeProvider";
 import BreakpointHit from "../model/breakpointHit";
-import SidebarHandler from "../sidebar/sidebarHandler";
+import * as path from "path";
+import LiveBreakpoint from "../model/instruments/liveBreakpoint";
+import instrumentListProvider from "../sidebar/instrumentListProvider";
 
 export default class LiveInstrumentManager {
     sourceMarker: SourceMarker
+
+    instruments: LiveBreakpoint[] = [];
 
     constructor(sourceMarker: SourceMarker) {
         this.sourceMarker = sourceMarker;
@@ -30,7 +33,8 @@ export default class LiveInstrumentManager {
                     this.handleBreakpointHitEvent(liveEvent);
                     break;
                 case LiveInstrumentEventType.BREAKPOINT_ADDED:
-                    this.handleBreakpointAddedEvent(liveEvent);
+                    let liveBreakpoint: LiveBreakpoint = JSON.parse(liveEvent.data);
+                    this.handleBreakpointAddedEvent(liveBreakpoint);
                     break;
                 case LiveInstrumentEventType.BREAKPOINT_REMOVED:
                     this.handleInstrumentRemovedEvent(liveEvent);
@@ -54,11 +58,15 @@ export default class LiveInstrumentManager {
     handleBreakpointHitEvent(liveEvent: LiveInstrumentEvent) {
         let hitEvent: BreakpointHit = JSON.parse(liveEvent.data);
 
-        SidebarHandler.setViewedBreakpointHit(hitEvent);
+        // SidebarHandler.setViewedBreakpointHit(hitEvent);
     }
 
-    handleBreakpointAddedEvent(liveEvent: LiveInstrumentEvent) {
-        this.sourceMarker.log(`Breakpoint added event. Data: ${liveEvent.data}`);
+    handleBreakpointAddedEvent(liveBreakpoint: LiveBreakpoint) {
+        this.instruments.push(liveBreakpoint);
+
+        // TODO: Add an event for this?
+        instrumentListProvider.refresh();
+        this.sourceMarker.liveInstrumentDisplay?.refreshGutterMarks()
     }
 
     handleLogAddedEvent(liveEvent: LiveInstrumentEvent) {

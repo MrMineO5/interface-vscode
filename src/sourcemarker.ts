@@ -5,6 +5,7 @@ import {readConfig, SourceMarkerConfig} from "./model/sourceMarkerConfig";
 import LiveInstrumentManager from "./instruments/liveInstrumentManager";
 import Record from "./model/record";
 import LiveLocation from "./model/liveLocation";
+import LiveInstrumentDisplay from "./instruments/liveInstrumentDisplay";
 
 export enum SourceMarkerStatus {
     STARTING,
@@ -24,6 +25,7 @@ export class SourceMarker {
     records?: Record[];
 
     liveInstrumentManager?: LiveInstrumentManager;
+    liveInstrumentDisplay?: LiveInstrumentDisplay;
 
     constructor() {
         // Ensure the sourceplusplus.enabled context is set to false
@@ -96,7 +98,9 @@ export class SourceMarker {
             this.log("Live instruments available");
 
             this.liveInstrumentManager = new LiveInstrumentManager(this);
+            this.liveInstrumentDisplay = new LiveInstrumentDisplay(this);
             await this.liveInstrumentManager.start();
+            this.liveInstrumentDisplay.start();
             // TODO: Live instruments
         } else {
             this.log("Live instruments unavailable");

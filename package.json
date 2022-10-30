@@ -60,8 +60,8 @@
     "views": {
       "sourceplusplus": [
         {
-          "id": "live-breakpoints",
-          "name": "Live Breakpoints"
+          "id": "instrument-list",
+          "name": "Live Instruments"
         }
       ]
     }

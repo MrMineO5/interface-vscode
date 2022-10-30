@@ -7,7 +7,6 @@ import {
     TreeItem,
     TreeItemCollapsibleState
 } from "vscode";
-import SidebarHandler from "./sidebarHandler";
 import {LiveVariable} from "../model/breakpointHit";
 
 class BreakpointTreeProvider implements TreeDataProvider<LiveVariable> {
@@ -21,11 +20,11 @@ class BreakpointTreeProvider implements TreeDataProvider<LiveVariable> {
 
     getChildren(element?: LiveVariable): ProviderResult<LiveVariable[]> {
         if (!element) {
-            if (SidebarHandler.viewedBreakpointHit) {
-                return SidebarHandler.viewedBreakpointHit.stackTrace.elements[0].variables;
-            } else {
+            // if (SidebarHandler.viewedBreakpointHit) {
+            //     return SidebarHandler.viewedBreakpointHit.stackTrace.elements[0].variables;
+            // } else {
                 return [];
-            }
+            // }
         }
         return element.value instanceof Array ? element.value : [];
     }
